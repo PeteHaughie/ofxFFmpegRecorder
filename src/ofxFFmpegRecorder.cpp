@@ -238,18 +238,31 @@ void ofxFFmpegRecorder::setPaused(bool paused)
     }
 }
 
-void ofxFFmpegRecorder::setPixelFormat(ofImageType aType)
+void ofxFFmpegRecorder::setInputPixelFormat(ofImageType aType)
 {
-	mPixFmt = "rgb24";
+	mInputPixFmt = "rgb24";
 	if (aType == OF_IMAGE_COLOR) {
-		mPixFmt = "rgb24";
+		mInputPixFmt = "rgb24";
 	}
 	else if (aType == OF_IMAGE_GRAYSCALE) {
-		mPixFmt = "gray";
+		mInputPixFmt = "gray";
 	}
 	else {
 		ofLogError() << "unsupported format, setting to OF_IMAGE_COLOR";
 	}
+}
+void ofxFFmpegRecorder::setOutputPixelFormat(ofImageType aType)
+{
+    mOutputPixFmt = "rgb24";
+    if (aType == OF_IMAGE_COLOR) {
+        mOutputPixFmt = "rgb24";
+    }
+    else if (aType == OF_IMAGE_GRAYSCALE) {
+        mOutputPixFmt = "gray";
+    }
+    else {
+        ofLogError() << "unsupported format, setting to OF_IMAGE_COLOR";
+    }
 }
 
 float ofxFFmpegRecorder::getRecordedDuration() const
@@ -357,7 +370,7 @@ bool ofxFFmpegRecorder::startCustomRecord()
     args.push_back("-s " + std::to_string(static_cast<unsigned int>(m_VideoSize.x)) + "x" + std::to_string(static_cast<unsigned int>(m_VideoSize.y)));
     args.push_back("-f rawvideo");
     //args.push_back("-pix_fmt rgb24");
-	args.push_back("-pix_fmt " + mPixFmt);
+	args.push_back("-pix_fmt " + mInputPixFmt);
     args.push_back("-vcodec rawvideo");
     args.push_back("-i -");
     
@@ -366,9 +379,11 @@ bool ofxFFmpegRecorder::startCustomRecord()
     args.push_back("-b:v " + std::to_string(m_BitRate) + "k");
     args.push_back("-r " + std::to_string(m_Fps));
     args.push_back("-framerate " + std::to_string(m_Fps));
+//    args.push_back("-pix_fmt " + mOutputPixFmt );
+    args.push_back("-pix_fmt " + mOutputPixFmt );
     std::copy(m_AdditionalOutputArguments.begin(), m_AdditionalOutputArguments.end(), std::back_inserter(args));
     
-    args.push_back(m_OutputPath);
+    args.push_back( ofToDataPath(m_OutputPath,true));
 //    args.push_back("-codecs ");
 
     std::string cmd = m_FFmpegPath + " ";
