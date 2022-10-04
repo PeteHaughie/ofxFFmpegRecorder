@@ -1,9 +1,9 @@
 #include "ofApp.h"
 
-
+//--------------------------------------
 void ofApp::setup() {
-    
-    m_Grabber.setup(640, 480);
+	m_Grabber.listDevices();
+    m_Grabber.setup(1280, 720);
     mCapFbo.allocate( m_Grabber.getWidth(), m_Grabber.getHeight(), GL_RGB );
 
     m_Recorder.setup(true, false, glm::vec2(m_Grabber.getWidth(), m_Grabber.getHeight()) );
@@ -11,6 +11,8 @@ void ofApp::setup() {
     
     // you don't need to set this if FFMPEG is in your system path //
     m_Recorder.setFFmpegPathToAddonsPath();
+	
+	m_Recorder.setInputPixelFormat(OF_IMAGE_COLOR);
     
     /**
      * You can also use the following methods to crop the output file
@@ -20,10 +22,14 @@ void ofApp::setup() {
      **/
 }
 
+//--------------------------------------
 void ofApp::update() {
     m_Grabber.update();
+	bNewFrame = m_Grabber.isFrameNew();
+	
 }
 
+//--------------------------------------
 void ofApp::draw() {
     
     mCapFbo.begin(); {
@@ -34,7 +40,12 @@ void ofApp::draw() {
         ofDrawCircle( mCapFbo.getWidth()/2, mCapFbo.getHeight()/2, ((sin( ofGetElapsedTimef() * 6.) * 0.5 + 0.5) + 0.5) * 100 + 20);
     } mCapFbo.end();
     
-    if( m_Recorder.isRecording() ) {
+    if( m_Recorder.isRecording() && bNewFrame ) {
+		
+		// if you just want the video grabber, you could just do
+//		m_Recorder.addFrame(m_Grabber.getPixels());
+		// instead of reading the capFbo to pixels, which can be slow 
+		
         // ofxFastFboReader can be used to speed this up :)
         mCapFbo.readToPixels( mPix );
         if( mPix.getWidth() > 0 && mPix.getHeight() > 0 ) {
@@ -67,11 +78,12 @@ void ofApp::draw() {
     ofPopStyle();
 }
 
-void ofApp::keyPressed(int key)
-{
+//--------------------------------------
+void ofApp::keyPressed(int key) {
 
 }
 
+//--------------------------------------
 void ofApp::keyReleased(int key) {
     if (key == ' ') {
         
@@ -91,6 +103,7 @@ void ofApp::keyReleased(int key) {
     }
 }
 
+//--------------------------------------
 void ofApp::mouseMoved(int x, int y)
 {
 

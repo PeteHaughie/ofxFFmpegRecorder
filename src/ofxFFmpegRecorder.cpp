@@ -238,38 +238,44 @@ void ofxFFmpegRecorder::setPaused(bool paused)
     }
 }
 
-void ofxFFmpegRecorder::setInputPixelFormat(ofImageType aType)
-{
+//-------------------------------------------
+void ofxFFmpegRecorder::setInputPixelFormat(ofImageType aType) {
 	mInputPixFmt = "rgb24";
 	if (aType == OF_IMAGE_COLOR) {
 		mInputPixFmt = "rgb24";
 	}
 	else if (aType == OF_IMAGE_GRAYSCALE) {
 		mInputPixFmt = "gray";
+	} else if( aType == OF_IMAGE_COLOR_ALPHA ) {
+		mInputPixFmt = "rgba";
 	}
 	else {
 		ofLogError() << "unsupported format, setting to OF_IMAGE_COLOR";
 	}
 }
-void ofxFFmpegRecorder::setOutputPixelFormat(ofImageType aType)
-{
+
+//-------------------------------------------
+void ofxFFmpegRecorder::setOutputPixelFormat(ofImageType aType) {
     mOutputPixFmt = "rgb24";
     if (aType == OF_IMAGE_COLOR) {
         mOutputPixFmt = "rgb24";
     }
     else if (aType == OF_IMAGE_GRAYSCALE) {
         mOutputPixFmt = "gray";
-    }
+	} else if( aType == OF_IMAGE_COLOR_ALPHA ) {
+		mOutputPixFmt = "rgba";
+	}
     else {
         ofLogError() << "unsupported format, setting to OF_IMAGE_COLOR";
     }
 }
 
-float ofxFFmpegRecorder::getRecordedDuration() const
-{
+//-------------------------------------------
+float ofxFFmpegRecorder::getRecordedDuration() const {
     return m_AddedVideoFrames / m_Fps;
 }
 
+//-------------------------------------------
 bool ofxFFmpegRecorder::record(float duration)
 {
     if (isRecording()) {
@@ -340,6 +346,7 @@ bool ofxFFmpegRecorder::record(float duration)
     return true;
 }
 
+//-------------------------------------------
 bool ofxFFmpegRecorder::startCustomRecord()
 {
     if (isRecording()) {
@@ -401,6 +408,7 @@ bool ofxFFmpegRecorder::startCustomRecord()
     return true;
 }
 
+//-------------------------------------------
 size_t ofxFFmpegRecorder::addFrame(const ofPixels &pixels)
 {
     if (m_IsPaused) {
@@ -439,6 +447,7 @@ size_t ofxFFmpegRecorder::addFrame(const ofPixels &pixels)
     return written;
 }
 
+//-------------------------------------------
 void ofxFFmpegRecorder::stop()
 {
     if (m_CustomRecordingFile) {
@@ -672,7 +681,7 @@ void ofxFFmpegRecorder::processFrame()
         ofPixels *pixels = nullptr;
         if (m_Frames.consume(pixels) && pixels) {
             const unsigned char *data = pixels->getData();
-            const size_t dataLength = m_VideoSize.x * m_VideoSize.y * 3;
+            const size_t dataLength = m_VideoSize.x * m_VideoSize.y * pixels->getNumChannels();
             const size_t written = fwrite(data, sizeof(char), dataLength, m_CustomRecordingFile);
             if (written <= 0) {
                 LOG_WARNING("Cannot write the frame.");

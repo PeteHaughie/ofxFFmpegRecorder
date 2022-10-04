@@ -8,6 +8,7 @@
 #include "ofPixels.h"
 #if defined(TARGET_OSX)
 #include <thread>
+#include <list>
 #endif
 
 using HighResClock = std::chrono::time_point<std::chrono::high_resolution_clock>;
@@ -284,6 +285,7 @@ private:
 
     std::string mInputPixFmt = "rgb24";
     std::string mOutputPixFmt = "rgb24";
+	ofPixels mResizePix;
 
 private:
     /**

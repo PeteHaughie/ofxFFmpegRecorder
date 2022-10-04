@@ -32,4 +32,5 @@ private:
     
     ofFbo mCapFbo;
     ofPixels mPix;
+	bool bNewFrame = false;
 };
