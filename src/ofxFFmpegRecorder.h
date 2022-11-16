@@ -6,9 +6,9 @@
 #include "ofSoundBaseTypes.h"
 #include "ofRectangle.h"
 #include "ofPixels.h"
-#if defined(TARGET_OSX)
+#if defined(TARGET_OSX) || defined(TARGET_LINUX)
 #include <thread>
-#include <list>
+//#include <list>
 #endif
 
 using HighResClock = std::chrono::time_point<std::chrono::high_resolution_clock>;
@@ -285,7 +285,8 @@ private:
 
     std::string mInputPixFmt = "rgb24";
     std::string mOutputPixFmt = "rgb24";
-	ofPixels mResizePix;
+	
+	bool mBStopRequested = false;
 
 private:
     /**

@@ -99,7 +99,9 @@ void ofxFFmpegRecorder::setFFmpegPathToAddonsPath() {
     std::string systemFolder = "vs";
     #if defined(TARGET_OSX)
     systemFolder = "osx";
-    #endif
+	#elif defined(TARGET_LINUX)
+	systemFolder = "linux";
+	#endif
     m_FFmpegPath = ofToDataPath("../../../../../addons/ofxFFmpegRecorder/libs/ffmpeg/lib/"+systemFolder+"/ffmpeg", true);
 }
 
@@ -450,15 +452,19 @@ size_t ofxFFmpegRecorder::addFrame(const ofPixels &pixels)
 //-------------------------------------------
 void ofxFFmpegRecorder::stop()
 {
+	mBStopRequested=false;
     if (m_CustomRecordingFile) {
-        #if defined(_WIN32)
-        _pclose(m_CustomRecordingFile);
-        #else
-        pclose(m_CustomRecordingFile);
-        #endif
-        m_CustomRecordingFile = nullptr;
-        m_AddedVideoFrames = 0;
-        joinThread();
+		mBStopRequested = true;
+		#if defined(_WIN32)
+		_pclose(m_CustomRecordingFile);
+		#else
+		pclose(m_CustomRecordingFile);
+		#endif
+		m_CustomRecordingFile = nullptr;
+		m_AddedVideoFrames = 0;
+		ofLogNotice("ofxFFmpegRecorder::stop : trying to join thread joinable: ") << m_Thread.joinable();
+		joinThread();
+		mBStopRequested=false;
     }
     else if (m_DefaultRecordingFile) {
         fwrite("q", sizeof(char), 1, m_DefaultRecordingFile);
@@ -677,7 +683,7 @@ void ofxFFmpegRecorder::determineDefaultDevices()
 
 void ofxFFmpegRecorder::processFrame()
 {
-    while (isRecording()) {
+	while (isRecording() && !mBStopRequested) {
         ofPixels *pixels = nullptr;
         if (m_Frames.consume(pixels) && pixels) {
             const unsigned char *data = pixels->getData();
@@ -697,5 +703,7 @@ void ofxFFmpegRecorder::joinThread()
 {
     if (m_Thread.joinable()) {
         m_Thread.join();
-    }
+	} else {
+		ofLogWarning("ofxFFmpegRecorder::joinThread() : not joinable!");
+	}
 }
