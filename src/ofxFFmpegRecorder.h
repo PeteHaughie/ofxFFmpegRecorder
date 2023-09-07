@@ -8,7 +8,7 @@
 #include "ofPixels.h"
 #if defined(TARGET_OSX) || defined(TARGET_LINUX)
 #include <thread>
-//#include <list>
+#include <list>
 #endif
 
 using HighResClock = std::chrono::time_point<std::chrono::high_resolution_clock>;
