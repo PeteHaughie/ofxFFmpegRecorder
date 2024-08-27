@@ -2,18 +2,19 @@
 
 //--------------------------------------
 void ofApp::setup() {
-	m_Grabber.listDevices();
+    m_Grabber.listDevices();
     m_Grabber.setup(1280, 720);
-    mCapFbo.allocate( m_Grabber.getWidth(), m_Grabber.getHeight(), GL_RGB );
+    mCapFbo.allocate(m_Grabber.getWidth(), m_Grabber.getHeight(), GL_RGB);
 
-    m_Recorder.setup(true, false, glm::vec2(m_Grabber.getWidth(), m_Grabber.getHeight()) );
+    // Update setup to reflect video-only configuration
+    m_Recorder.setup(true, glm::vec2(m_Grabber.getWidth(), m_Grabber.getHeight()), 30.0f, 2000); // Removed audio parameter
     m_Recorder.setOverWrite(true);
-    
-    // you don't need to set this if FFMPEG is in your system path //
+
+    // You don't need to set this if FFMPEG is in your system path
     m_Recorder.setFFmpegPathToAddonsPath();
-	
-	m_Recorder.setInputPixelFormat(OF_IMAGE_COLOR);
-    
+
+    m_Recorder.setInputPixelFormat(OF_IMAGE_COLOR);
+
     /**
      * You can also use the following methods to crop the output file
      *     m_Recorder.addAdditionalOutputArgument("-vf \"crop=300:300:0:0\"");
@@ -25,47 +26,44 @@ void ofApp::setup() {
 //--------------------------------------
 void ofApp::update() {
     m_Grabber.update();
-	bNewFrame = m_Grabber.isFrameNew();
-	
+    bNewFrame = m_Grabber.isFrameNew();
 }
 
 //--------------------------------------
 void ofApp::draw() {
-    
     mCapFbo.begin(); {
-        ofSetColor( 255 );
-        m_Grabber.draw(0, 0, mCapFbo.getWidth(), mCapFbo.getHeight() );
+        ofSetColor(255);
+        m_Grabber.draw(0, 0, mCapFbo.getWidth(), mCapFbo.getHeight());
         ofSetColor(ofColor::green);
-        if( m_Recorder.isRecording() ) ofSetColor( ofColor::red );
-        ofDrawCircle( mCapFbo.getWidth()/2, mCapFbo.getHeight()/2, ((sin( ofGetElapsedTimef() * 6.) * 0.5 + 0.5) + 0.5) * 100 + 20);
+        if (m_Recorder.isRecording()) {
+            ofSetColor(ofColor::red);
+        }
+        ofDrawCircle(mCapFbo.getWidth() / 2, mCapFbo.getHeight() / 2, ((sin(ofGetElapsedTimef() * 6.) * 0.5 + 0.5) + 0.5) * 100 + 20);
     } mCapFbo.end();
-    
-    if( m_Recorder.isRecording() && bNewFrame ) {
-		
-		// if you just want the video grabber, you could just do
-//		m_Recorder.addFrame(m_Grabber.getPixels());
-		// instead of reading the capFbo to pixels, which can be slow 
-		
+
+    if (m_Recorder.isRecording() && bNewFrame) {
+        // If you just want the video grabber, you could just do
+        // m_Recorder.addFrame(m_Grabber.getPixels());
+        // instead of reading the capFbo to pixels, which can be slow
+
         // ofxFastFboReader can be used to speed this up :)
-        mCapFbo.readToPixels( mPix );
-        if( mPix.getWidth() > 0 && mPix.getHeight() > 0 ) {
-            m_Recorder.addFrame( mPix );
+        mCapFbo.readToPixels(mPix);
+        if (mPix.getWidth() > 0 && mPix.getHeight() > 0) {
+            m_Recorder.addFrame(mPix);
         }
     }
-    
-    mCapFbo.draw(0,0);
-    
+
+    mCapFbo.draw(0, 0);
+
     ofDrawBitmapStringHighlight(std::to_string(m_Recorder.getRecordedDuration()), 40, 45);
     ofDrawBitmapStringHighlight("FPS: " + std::to_string(ofGetFrameRate()), 10, 16);
 
     ofPushStyle(); {
         if (m_Recorder.isPaused() && m_Recorder.isRecording()) {
             ofSetColor(ofColor::yellow);
-        }
-        else if (m_Recorder.isRecording()) {
+        } else if (m_Recorder.isRecording()) {
             ofSetColor(ofColor::red);
-        }
-        else {
+        } else {
             ofSetColor(ofColor::green);
         }
         ofDrawCircle(ofPoint(10, 40), 10);
@@ -73,7 +71,7 @@ void ofApp::draw() {
         // Draw the information
         ofDrawBitmapStringHighlight("Press spacebar to toggle record custom."
                                     "\nPress (t) to save thumbnail.",
-                                    10, ofGetHeight() - 200 );
+                                    10, ofGetHeight() - 200);
     }
     ofPopStyle();
 }
@@ -86,15 +84,14 @@ void ofApp::keyPressed(int key) {
 //--------------------------------------
 void ofApp::keyReleased(int key) {
     if (key == ' ') {
-        
-        if( m_Recorder.isRecording() ) {
+        if (m_Recorder.isRecording()) {
             // stop
             m_Recorder.stop();
         } else {
 #if defined(TARGET_OSX)
-            m_Recorder.setOutputPath( ofToDataPath(ofGetTimestampString() + ".mp4", true ));
+            m_Recorder.setOutputPath(ofToDataPath(ofGetTimestampString() + ".mp4", true));
 #else
-            m_Recorder.setOutputPath( ofToDataPath(ofGetTimestampString() + ".avi", true ));
+            m_Recorder.setOutputPath(ofToDataPath(ofGetTimestampString() + ".avi", true));
 #endif
             m_Recorder.startCustomRecord();
         }
@@ -104,47 +101,38 @@ void ofApp::keyReleased(int key) {
 }
 
 //--------------------------------------
-void ofApp::mouseMoved(int x, int y)
-{
+void ofApp::mouseMoved(int x, int y) {
 
 }
 
-void ofApp::mouseDragged(int x, int y, int button)
-{
+void ofApp::mouseDragged(int x, int y, int button) {
 
 }
 
-void ofApp::mousePressed(int x, int y, int button)
-{
-    
-}
-
-void ofApp::mouseReleased(int x, int y, int button)
-{
-    
-}
-
-void ofApp::mouseEntered(int x, int y)
-{
+void ofApp::mousePressed(int x, int y, int button) {
 
 }
 
-void ofApp::mouseExited(int x, int y)
-{
+void ofApp::mouseReleased(int x, int y, int button) {
 
 }
 
-void ofApp::windowResized(int w, int h)
-{
+void ofApp::mouseEntered(int x, int y) {
 
 }
 
-void ofApp::gotMessage(ofMessage msg)
-{
+void ofApp::mouseExited(int x, int y) {
 
 }
 
-void ofApp::dragEvent(ofDragInfo dragInfo)
-{
+void ofApp::windowResized(int w, int h) {
+
+}
+
+void ofApp::gotMessage(ofMessage msg) {
+
+}
+
+void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 }
