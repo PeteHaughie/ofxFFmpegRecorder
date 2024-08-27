@@ -5,7 +5,7 @@ A small class to utilize the video recording functionality of `ffmpeg`.
 # Features
 
 - Record video
-- Record audio
+- ~~Record audio~~
 - Save thumbnail from a video
 - Record custom video by adding `ofPixels`
 - Pause the custom video recording
