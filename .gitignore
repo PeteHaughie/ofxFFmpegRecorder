@@ -1,0 +1,282 @@
+# Compiled object files
+*.o
+*.lo
+*.la
+*.al
+*.so
+*.dll
+*.exe
+*.out
+*.app
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.a
+
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode files
+*.xcodeproj
+*.xcworkspace
+*.xcuserstate
+
+# Visual Studio files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Code::Blocks files
+*.cbp
+*.layout
+*.depend
+*.depend.bak
+
+# Eclipse files
+.settings/
+
+# Sublime Text files
+*.sublime-project
+*.sublime-workspace
+
+# CMake files
+CMakeLists.txt.user
+
+# Compiled Python files
+*.pyc
+
+# Compiled Java files
+*.class
+
+# Compiled Ruby files
+*.rbc
+
+# Compiled Perl files
+*.swp
+*.swo
+
+# Compiled PHP files
+*.php[345]
+
+# Compiled JavaScript files
+*.js[345]
+
+# Compiled TypeScript files
+*.ts[345]
+
+# Compiled CoffeeScript files
+*.coffee.js
+
+# Compiled CSS files
+*.css.map
+
+# Compiled Sass files
+*.sassc
+
+# Compiled Less files
+*.less.css
+
+# Compiled Stylus files
+*.styl.css
+
+# Compiled SCSS files
+*.scss.css
+
+# Compiled JSX files
+*.jsx.js
+
+# Compiled TSX files
+*.tsx.js
+
+# Compiled Vue files
+*.vue.js
+
+# Compiled Elm files
+*.elm.js
+
+# Compiled Swift files
+*.swiftmodule
+*.swiftdoc
+*.swiftsourceinfo
+
+# Compiled Kotlin files
+*.kotlin_module
+
+# Compiled Dart files
+*.dart.js
+*.dart.js.map
+
+# Compiled Go files
+*.exe
+*.test
+*.prof
+
+# Compiled Rust files
+*.rlib
+*.rmeta
+
+# Compiled Haskell files
+*.hi
+*.o
+*.hi.*
+*.o.*
+*.dyn_hi
+*.dyn_o
+
+# Compiled Erlang files
+*.beam
+
+# Compiled Elixir files
+*.beam
+*.so
+*.o
+
+# Compiled Lua files
+*.lua
+*.luac
+
+# Compiled R files
+*.RData
+*.Rhistory
+
+# Compiled MATLAB files
+*.mat
+
+# Compiled Julia files
+*.ji
+
+# Compiled Groovy files
+*.class
+
+# Compiled Scala files
+*.class
+
+# Compiled Clojure files
+*.class
+
+# Compiled F# files
+*.fsi
+*.fsx
+*.dll
+*.exe
+*.pdb
+*.dll.mdb
+*.exe.mdb
+
+# Compiled D files
+*.o
+*.obj
+*.exe
+*.dll
+
+# Compiled Nim files
+*.exe
+*.dll
+*.nimcache
+
+# Compiled Crystal files
+*.o
+*.a
+*.so
+
+# Compiled Eiffel files
+*.o
+*.obj
+*.so
+*.dll
+
+# Compiled Fortran files
+*.o
+*.mod
+*.smod
+
+# Compiled Ada files
+*.o
+*.ali
+*.so
+
+# Compiled OCaml files
+*.cmi
+*.cmo
+*.cma
+*.cmx
+*.cmxa
+*.cmxs
+*.cmt
+*.cmti
+*.annot
+*.o
+*.obj
+*.byte
+*.native
+*.exe
+*.dll
+*.so
+*.cmxs
+*.cmo
+*.cmx
+*.cmxa
+*.cmt
+*.cmti
+*.annot
+*.o
+*.obj
+*.byte
+*.native
+*.exe
+*.dll
+*.so
+*.cmxs
+
+# Compiled ReasonML files
+*.cmi
+*.cmo
+*.cma
+*.cmx
+*.cmxa
+*.cmxs
+*.cmt
+*.cmti
+*.annot
+*.o
+*.obj
+*.byte
+*.native
+*.exe
+*.dll
+*.so
+*.cmxs
+*.cmo
+*.cmx
+*.cmxa
+*.cmt
+*.cmti
+*.annot
+*.o
+*.obj
+*.byte
+*.native
+*.exe
+*.dll
+*.so
+*.cmxs
+
+# Compiled Kotlin Native files
+*.klib
+*.kexe
+
+# Compiled PureScript files
+output/
+
+# Compiled Elm files
+elm-stuff/
