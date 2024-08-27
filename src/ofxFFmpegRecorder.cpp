@@ -9,21 +9,21 @@
 #define LOG_NOTICE(message) ofLogNotice("") << __FUNCTION__ << ":" << __LINE__ << ": " << message
 
 ofxFFmpegRecorder::ofxFFmpegRecorder()
-    : m_FFmpegPath("ffmpeg")
-    , m_OutputPath("")
-    , m_IsRecordVideo(false)
-    , m_IsOverWrite(false)
-    , m_IsPaused(false)
-    , m_VideoSize(0, 0)
-    , m_BitRate(2000)
-    , m_AddedVideoFrames(0)
-    , m_Fps(30.f)
-    , m_CaptureDuration(0.f)
-    , m_TotalPauseDuration(0.f)
-    , m_DefaultVideoDevice()
-    , m_VideCodec("mpeg4")
-    , m_CustomRecordingFile(nullptr)
-    , m_DefaultRecordingFile(nullptr)
+    : m_FFmpegPath("ffmpeg"),
+      m_OutputPath(""), 
+      m_IsRecordVideo(false), 
+      m_IsOverWrite(false), 
+      m_IsPaused(false), 
+      m_VideoSize(0, 0), 
+      m_BitRate(4000), 
+      m_AddedVideoFrames(0), 
+      m_Fps(30.f), 
+      m_CaptureDuration(0.f), 
+      m_TotalPauseDuration(0.f), 
+      m_DefaultVideoDevice(), 
+      m_VideCodec("mpeg4"), 
+      m_CustomRecordingFile(nullptr), 
+      m_DefaultRecordingFile(nullptr)
 {
 }
 
@@ -39,7 +39,8 @@ void ofxFFmpegRecorder::setup(bool recordVideo, glm::vec2 videoSize, float fps, 
     m_Fps = fps;
     m_BitRate = bitrate;
 
-    if (ffmpegPath.length() > 0) {
+    if (ffmpegPath.length() > 0)
+    {
         m_FFmpegPath = ffmpegPath;
     }
 }
@@ -51,7 +52,8 @@ bool ofxFFmpegRecorder::isRecordVideo() const
 
 void ofxFFmpegRecorder::setRecordVideo(bool record)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -65,7 +67,8 @@ std::string ofxFFmpegRecorder::getFFmpegPath() const
 
 void ofxFFmpegRecorder::setFFmpegPath(const std::string &path)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -74,7 +77,8 @@ void ofxFFmpegRecorder::setFFmpegPath(const std::string &path)
 
 void ofxFFmpegRecorder::setFFmpegPathToAddonsPath()
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
     std::string systemFolder = "vs";
@@ -93,7 +97,8 @@ float ofxFFmpegRecorder::getCaptureDuration() const
 
 void ofxFFmpegRecorder::setCaptureDuration(float duration)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -107,7 +112,8 @@ ofVideoDevice ofxFFmpegRecorder::getDefaultVideoDevice() const
 
 void ofxFFmpegRecorder::setDefaultVideoDevice(const ofVideoDevice &device)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -121,7 +127,8 @@ std::string ofxFFmpegRecorder::getOutputPath() const
 
 void ofxFFmpegRecorder::setOutputPath(const std::string &path)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -135,7 +142,8 @@ float ofxFFmpegRecorder::getFps() const
 
 void ofxFFmpegRecorder::setFps(float fps)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -149,7 +157,8 @@ unsigned int ofxFFmpegRecorder::getBitRate() const
 
 void ofxFFmpegRecorder::setBitRate(unsigned int rate)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -163,7 +172,8 @@ std::string ofxFFmpegRecorder::getVideoCodec() const
 
 void ofxFFmpegRecorder::setVideoCodec(const std::string &codec)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -194,14 +204,18 @@ bool ofxFFmpegRecorder::isPaused() const
 
 void ofxFFmpegRecorder::setPaused(bool paused)
 {
-    if (m_CustomRecordingFile == nullptr) {
+    if (m_CustomRecordingFile == nullptr)
+    {
         LOG_WARNING("Cannot pause the default webcam recording.");
     }
-    else {
-        if (paused && m_IsPaused == false) {
+    else
+    {
+        if (paused && m_IsPaused == false)
+        {
             m_PauseStartTime = std::chrono::high_resolution_clock::now();
         }
-        else if (paused == false && m_IsPaused) {
+        else if (paused == false && m_IsPaused)
+        {
             m_PauseEndTime = std::chrono::high_resolution_clock::now();
             float delta = std::chrono::duration<float>(m_PauseEndTime - m_PauseStartTime).count();
             m_TotalPauseDuration += delta;
@@ -214,16 +228,20 @@ void ofxFFmpegRecorder::setPaused(bool paused)
 void ofxFFmpegRecorder::setInputPixelFormat(ofImageType aType)
 {
     mInputPixFmt = "rgb24";
-    if (aType == OF_IMAGE_COLOR) {
+    if (aType == OF_IMAGE_COLOR)
+    {
         mInputPixFmt = "rgb24";
     }
-    else if (aType == OF_IMAGE_GRAYSCALE) {
+    else if (aType == OF_IMAGE_GRAYSCALE)
+    {
         mInputPixFmt = "gray";
     }
-    else if (aType == OF_IMAGE_COLOR_ALPHA) {
+    else if (aType == OF_IMAGE_COLOR_ALPHA)
+    {
         mInputPixFmt = "rgba";
     }
-    else {
+    else
+    {
         ofLogError() << "unsupported format, setting to OF_IMAGE_COLOR";
     }
 }
@@ -231,16 +249,20 @@ void ofxFFmpegRecorder::setInputPixelFormat(ofImageType aType)
 void ofxFFmpegRecorder::setOutputPixelFormat(ofImageType aType)
 {
     mOutputPixFmt = "rgb24";
-    if (aType == OF_IMAGE_COLOR) {
+    if (aType == OF_IMAGE_COLOR)
+    {
         mOutputPixFmt = "rgb24";
     }
-    else if (aType == OF_IMAGE_GRAYSCALE) {
+    else if (aType == OF_IMAGE_GRAYSCALE)
+    {
         mOutputPixFmt = "gray";
     }
-    else if (aType == OF_IMAGE_COLOR_ALPHA) {
+    else if (aType == OF_IMAGE_COLOR_ALPHA)
+    {
         mOutputPixFmt = "rgba";
     }
-    else {
+    else
+    {
         ofLogError() << "unsupported format, setting to OF_IMAGE_COLOR";
     }
 }
@@ -252,17 +274,20 @@ float ofxFFmpegRecorder::getRecordedDuration() const
 
 bool ofxFFmpegRecorder::record(float duration)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_ERROR("A recording is already in progress.");
         return false;
     }
 
-    if (m_OutputPath.length() == 0) {
+    if (m_OutputPath.length() == 0)
+    {
         LOG_ERROR("Output path is empty. Cannot record.");
         return false;
     }
 
-    if (ofFile::doesFileExist(m_OutputPath, false) && m_IsOverWrite == false) {
+    if (ofFile::doesFileExist(m_OutputPath, false) && m_IsOverWrite == false)
+    {
         LOG_ERROR("The output file already exists and overwriting is disabled. Cannot capture video.");
         return false;
     }
@@ -280,12 +305,14 @@ bool ofxFFmpegRecorder::record(float duration)
     args.push_back("-f v4l2");
 #endif
 
-    if (m_CaptureDuration > 0.f) {
+    if (m_CaptureDuration > 0.f)
+    {
         args.push_back("-t " + std::to_string(m_CaptureDuration));
     }
 
     std::string inputDevices;
-    if (m_IsRecordVideo) {
+    if (m_IsRecordVideo)
+    {
         inputDevices += "video=\"" + m_DefaultVideoDevice.deviceName + "\"";
     }
 
@@ -299,7 +326,8 @@ bool ofxFFmpegRecorder::record(float duration)
     std::copy(m_AdditionalOutputArguments.begin(), m_AdditionalOutputArguments.end(), std::back_inserter(args));
 
     std::string cmd = m_FFmpegPath + " ";
-    for (auto arg : args) {
+    for (auto arg : args)
+    {
         cmd += arg + " ";
     }
 
@@ -314,17 +342,20 @@ bool ofxFFmpegRecorder::record(float duration)
 
 bool ofxFFmpegRecorder::startCustomRecord()
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_ERROR("A recording is already in progress.");
         return false;
     }
 
-    if (m_OutputPath.length() == 0) {
+    if (m_OutputPath.length() == 0)
+    {
         LOG_ERROR("Output path is empty. Cannot record.");
         return false;
     }
 
-    if (ofFile::doesFileExist(m_OutputPath, false) && m_IsOverWrite == false) {
+    if (ofFile::doesFileExist(m_OutputPath, false) && m_IsOverWrite == false)
+    {
         LOG_ERROR("The output file already exists and overwriting is disabled. Cannot capture video.");
         return false;
     }
@@ -354,7 +385,8 @@ bool ofxFFmpegRecorder::startCustomRecord()
     args.push_back(ofToDataPath(m_OutputPath, true));
 
     std::string cmd = m_FFmpegPath + " ";
-    for (auto arg : args) {
+    for (auto arg : args)
+    {
         cmd += arg + " ";
     }
 
@@ -369,24 +401,28 @@ bool ofxFFmpegRecorder::startCustomRecord()
 
 size_t ofxFFmpegRecorder::addFrame(const ofPixels &pixels)
 {
-    if (m_IsPaused) {
+    if (m_IsPaused)
+    {
         LOG_NOTICE("Recording is paused.");
         return 0;
     }
 
-    if (m_CustomRecordingFile == nullptr) {
+    if (m_CustomRecordingFile == nullptr)
+    {
         LOG_ERROR("Custom recording is not in progress. Cannot add the frame.");
         return 0;
     }
 
-    if (pixels.isAllocated() == false) {
+    if (pixels.isAllocated() == false)
+    {
         LOG_ERROR("Given pixels is not allocated.");
         return 0;
     }
 
     size_t written = 0;
 
-    if (m_AddedVideoFrames == 0) {
+    if (m_AddedVideoFrames == 0)
+    {
         m_Thread = std::thread(&ofxFFmpegRecorder::processFrame, this);
         m_RecordStartTime = std::chrono::high_resolution_clock::now();
     }
@@ -396,7 +432,8 @@ size_t ofxFFmpegRecorder::addFrame(const ofPixels &pixels)
     float delta = std::chrono::duration<float>(now - m_RecordStartTime).count() - recordedDuration - m_TotalPauseDuration;
     const float framerate = 1.f / m_Fps;
 
-    while (m_AddedVideoFrames == 0 || delta >= framerate) {
+    while (m_AddedVideoFrames == 0 || delta >= framerate)
+    {
         delta -= framerate;
         m_Frames.produce(new ofPixels(pixels));
         m_AddedVideoFrames++;
@@ -408,7 +445,8 @@ size_t ofxFFmpegRecorder::addFrame(const ofPixels &pixels)
 void ofxFFmpegRecorder::stop()
 {
     mBStopRequested = false;
-    if (m_CustomRecordingFile) {
+    if (m_CustomRecordingFile)
+    {
         mBStopRequested = true;
 #if defined(_WIN32)
         _pclose(m_CustomRecordingFile);
@@ -421,7 +459,8 @@ void ofxFFmpegRecorder::stop()
         joinThread();
         mBStopRequested = false;
     }
-    else if (m_DefaultRecordingFile) {
+    else if (m_DefaultRecordingFile)
+    {
         fwrite("q", sizeof(char), 1, m_DefaultRecordingFile);
 #if defined(_WIN32)
         _pclose(m_DefaultRecordingFile);
@@ -434,7 +473,8 @@ void ofxFFmpegRecorder::stop()
 
 void ofxFFmpegRecorder::cancel()
 {
-    if (m_CustomRecordingFile) {
+    if (m_CustomRecordingFile)
+    {
 #if defined(_WIN32)
         _pclose(m_CustomRecordingFile);
 #else
@@ -444,7 +484,8 @@ void ofxFFmpegRecorder::cancel()
         m_AddedVideoFrames = 0;
         joinThread();
     }
-    else if (m_DefaultRecordingFile) {
+    else if (m_DefaultRecordingFile)
+    {
         fwrite("q", sizeof(char), 1, m_DefaultRecordingFile);
 #if defined(_WIN32)
         _pclose(m_DefaultRecordingFile);
@@ -474,7 +515,8 @@ const std::vector<std::string> &ofxFFmpegRecorder::getAdditionalInputArguments()
 
 void ofxFFmpegRecorder::setAdditionalInputArguments(const std::vector<std::string> &args)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -483,7 +525,8 @@ void ofxFFmpegRecorder::setAdditionalInputArguments(const std::vector<std::strin
 
 void ofxFFmpegRecorder::addAdditionalInputArgument(const std::string &arg)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -502,7 +545,8 @@ const std::vector<std::string> &ofxFFmpegRecorder::getAdditionalOutputArguments(
 
 void ofxFFmpegRecorder::setAdditionalOutputArguments(const std::vector<std::string> &args)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -511,7 +555,8 @@ void ofxFFmpegRecorder::setAdditionalOutputArguments(const std::vector<std::stri
 
 void ofxFFmpegRecorder::addAdditionalOutputArgument(const std::string &arg)
 {
-    if (isRecording()) {
+    if (isRecording())
+    {
         LOG_NOTICE("A recording is in progress. The change will take effect for the next recording session.");
     }
 
@@ -547,15 +592,18 @@ bool ofxFFmpegRecorder::isRecordingDefault() const
 void ofxFFmpegRecorder::saveThumbnail(const unsigned int &hour, const unsigned int &minute, const float &second, const std::string &output, glm::vec2 size,
                                       ofRectangle crop, std::string videoFilePath)
 {
-    if (videoFilePath.length() == 0) {
-        if (isRecording()) {
+    if (videoFilePath.length() == 0)
+    {
+        if (isRecording())
+        {
             LOG_ERROR("Cannot use the default video file because a recording is already in progress.");
             return;
         }
 
         videoFilePath = m_OutputPath;
 
-        if (ofFile::doesFileExist(m_OutputPath, false) == false) {
+        if (ofFile::doesFileExist(m_OutputPath, false) == false)
+        {
             LOG_ERROR("The video file (" + videoFilePath + " does not exist!");
             return;
         }
@@ -569,31 +617,37 @@ void ofxFFmpegRecorder::saveThumbnail(const unsigned int &hour, const unsigned i
     args.push_back("-vframes 1");
 
     std::string vfString = "\"";
-    if (size.x > 0 && size.y > 0) {
+    if (size.x > 0 && size.y > 0)
+    {
         vfString += "scale=" + std::to_string(size.x) + ":" + std::to_string(size.y);
     }
 
-    if (crop.isZero() == false) {
-        if (vfString.length() > 1) {
+    if (crop.isZero() == false)
+    {
+        if (vfString.length() > 1)
+        {
             vfString += ",";
         }
 
         vfString += "crop=" + std::to_string(crop.getWidth()) + ":" + std::to_string(crop.getHeight());
-        if (crop.getX() > 0 && crop.getY() > 0) {
+        if (crop.getX() > 0 && crop.getY() > 0)
+        {
             vfString += ":" + std::to_string(crop.getX()) + ":" + std::to_string(crop.getY());
         }
     }
 
     vfString += "\"";
 
-    if (vfString.length() > 2) {
+    if (vfString.length() > 2)
+    {
         args.push_back("-vf " + vfString);
     }
 
     args.push_back(output);
 
     std::string cmd = m_FFmpegPath + " ";
-    for (auto arg : args) {
+    for (auto arg : args)
+    {
         cmd += arg + " ";
     }
 
@@ -608,12 +662,15 @@ void ofxFFmpegRecorder::saveThumbnail(const unsigned int &hour, const unsigned i
 
 void ofxFFmpegRecorder::determineDefaultDevices()
 {
-    if (m_IsRecordVideo && m_DefaultVideoDevice.deviceName.length() == 0) {
+    if (m_IsRecordVideo && m_DefaultVideoDevice.deviceName.length() == 0)
+    {
         ofVideoGrabber videoGrabber;
         const std::vector<ofVideoDevice> devices = videoGrabber.listDevices();
 
-        for (const ofVideoDevice &device : devices) {
-            if (device.bAvailable) {
+        for (const ofVideoDevice &device : devices)
+        {
+            if (device.bAvailable)
+            {
                 m_DefaultVideoDevice = device;
                 break;
             }
@@ -623,13 +680,16 @@ void ofxFFmpegRecorder::determineDefaultDevices()
 
 void ofxFFmpegRecorder::processFrame()
 {
-    while (isRecording() && !mBStopRequested) {
+    while (isRecording() && !mBStopRequested)
+    {
         ofPixels *pixels = nullptr;
-        if (m_Frames.consume(pixels) && pixels) {
+        if (m_Frames.consume(pixels) && pixels)
+        {
             const unsigned char *data = pixels->getData();
             const size_t dataLength = m_VideoSize.x * m_VideoSize.y * pixels->getNumChannels();
             const size_t written = fwrite(data, sizeof(char), dataLength, m_CustomRecordingFile);
-            if (written <= 0) {
+            if (written <= 0)
+            {
                 LOG_WARNING("Cannot write the frame.");
             }
 
@@ -641,9 +701,12 @@ void ofxFFmpegRecorder::processFrame()
 
 void ofxFFmpegRecorder::joinThread()
 {
-    if (m_Thread.joinable()) {
+    if (m_Thread.joinable())
+    {
         m_Thread.join();
-    } else {
+    }
+    else
+    {
         ofLogWarning("ofxFFmpegRecorder::joinThread() : not joinable!");
     }
 }
