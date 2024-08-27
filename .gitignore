@@ -9,6 +9,9 @@
 *.out
 *.app
 
+# video output
+*.mp4
+
 # Precompiled Headers
 *.gch
 *.pch
