@@ -12,6 +12,9 @@
 # video output
 *.mp4
 
+# folders
+obj
+
 # Precompiled Headers
 *.gch
 *.pch
